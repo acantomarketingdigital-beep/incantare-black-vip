@@ -1,12 +1,12 @@
 /* ============================================================
    CONFIGURAÇÃO — troque os links SOMENTE aqui
    ============================================================ */
-const VIP_WHATSAPP_URL = "COLOCAR_LINK_DO_GRUPO_AQUI";       // link do Grupo VIP (chat.whatsapp.com/...)
-const AGENCY_WHATSAPP_URL = "COLOCAR_WHATSAPP_ADRIANO_AQUI"; // WhatsApp da Adriano Marketing (wa.me/...)
+const VIP_WHATSAPP_URL = "https://chat.whatsapp.com/IPG0XB9kHQcCrYDNCIuFmL";      // link do Grupo VIP (chat.whatsapp.com/...)
+const AGENCY_WHATSAPP_URL = "https://wa.me/5541998362692?text=" + encodeURIComponent("Olá! Vi a página do Grupo VIP da Incantare e quero uma estrutura assim para a minha clínica."); // WhatsApp da Adriano Marketing (wa.me/...)
 
 /* ============================================================
    Incantare Joinville — Grupo VIP Black Antecipada
-   Tracking (dataLayer → GTM-PNSMTRVH → GA4 / Meta Pixel)
+   Tracking (dataLayer → GTM-KT5CN4GV → GA4 / Meta Pixel)
    ------------------------------------------------------------
    landing_page_view   -> 1x por carregamento real da página
    vip_whatsapp_click  -> todo CTA [data-vip-cta], ANTES de abrir o grupo

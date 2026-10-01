@@ -3,16 +3,17 @@
 Landing estática (HTML/CSS/JS puro) para Meta Ads → Grupo VIP no WhatsApp. Sem build: a Vercel publica a raiz como está.
 
 ## Onde trocar os links
-`js/app.js`, linhas 4–5 (são os únicos lugares):
+`js/app.js`, linhas 4–5 (únicos lugares):
 ```js
-const VIP_WHATSAPP_URL = "COLOCAR_LINK_DO_GRUPO_AQUI";       // todos os CTAs do Grupo VIP
-const AGENCY_WHATSAPP_URL = "COLOCAR_WHATSAPP_ADRIANO_AQUI"; // assinatura Adriano Marketing
+const VIP_WHATSAPP_URL = "https://chat.whatsapp.com/IPG0XB9kHQcCrYDNCIuFmL"; // mesmo grupo da LP VIP anterior
+const AGENCY_WHATSAPP_URL = "https://wa.me/5541998362692?text=...";          // assinatura Adriano Marketing
 ```
-Enquanto estiver com o placeholder, o clique registra o evento mas não navega (aviso no console).
+Link com placeholder: o clique registra o evento mas não navega (aviso no console).
 
 ## Tracking
-- GTM `GTM-PNSMTRVH` (script no `<head>` + noscript logo após `<body>`), também nas páginas legais.
-- GA4 `G-BV46SKRELF` e Meta Pixel `762018213673538` **não** são instalados no código: ficam dentro do GTM.
+- GTM **`GTM-KT5CN4GV`** (script no `<head>` + noscript logo após `<body>`), também nas páginas legais.
+- GA4 `G-BV46SKRELF` e Meta Pixel `762018213673538` **não** ficam no código: são configurados dentro do GTM.
+- O Pixel `762018213673538` é compartilhado de propósito com outras campanhas da Incantare, para treinar o Pixel com pessoas que entram em grupos VIP.
 
 | Evento (dataLayer) | Quando | Campos |
 |---|---|---|
@@ -20,21 +21,27 @@ Enquanto estiver com o placeholder, o clique registra o evento mas não navega (
 | `vip_whatsapp_click` | qualquer CTA VIP, 150 ms antes de abrir o grupo | button_location (`hero` / `carousel` / `final_cta` / `sticky_mobile`), button_text, destination=`whatsapp_group` + todos os campos acima |
 | `agency_footer_click` | link da assinatura da agência | source_page, clinic, city (NÃO é conversão da clínica) |
 
-UTMs/fbclid/gclid ficam em `sessionStorage` (`incantare_black_vip_attribution`); um valor vazio/"undefined" na URL nunca sobrescreve um valor já salvo; campos ausentes vão como `""`.
+UTMs/fbclid/gclid ficam em `sessionStorage` (`incantare_black_vip_attribution`). Valor vazio/"undefined" na URL nunca sobrescreve um valor já salvo; campos ausentes vão como `""`.
 
-## Configuração necessária no GTM-PNSMTRVH (ainda NÃO existe lá)
-Auditoria do container publicado (1/out/2026): o GTM-PNSMTRVH é hoje o container da landing de **lábios**
-(eventos `quiz_start` / `whatsapp_contact` → Pixel `Lead` / `Contact`). Ele não tem trigger para
-`landing_page_view` nem para `vip_whatsapp_click`. A landing VIP antiga usa **outro** container
-(`GTM-NGXFP667`, GA4 `G-G8PGQ8CQEE`, Pixel `1851466205395230`), em que `vip_whatsapp_click` dispara
-`fbq('trackCustom','VipGroupClick',…)` + `fbq('track','Lead')`.
+## Configuração do GTM-KT5CN4GV
+Em 1/out/2026 a versão publicada deste container **ainda não tinha nenhuma tag**. Criar:
 
-Para criar no GTM-PNSMTRVH:
-1. Variáveis da camada de dados: button_location, button_text, destination, state, campaign_type, utm_source, utm_medium, utm_campaign, utm_content, utm_term (city, clinic, source_page e page_type já existem).
-2. Triggers de evento personalizado: `landing_page_view`, `vip_whatsapp_click`.
-3. GA4 — evento `landing_page_view` e evento `vip_whatsapp_click` (com os parâmetros da tabela; sem fbclid/gclid/PII).
-4. Meta Pixel — no `vip_whatsapp_click`, **uma** conversão seguindo o padrão VIP anterior. Atenção: o Lead desse Pixel já é usado pela landing de lábios.
-5. Não criar nenhuma tag para `agency_footer_click` que dispare Lead/Contact/VipGroupClick.
+**Variáveis (Variável da camada de dados):** button_location, button_text, destination, city, state, page_type, campaign_type, clinic, source_page, utm_source, utm_medium, utm_campaign, utm_content, utm_term.
+
+**Acionadores (Evento personalizado):** `landing_page_view`, `vip_whatsapp_click`. Não criar nenhum para `agency_footer_click` que leve a Lead/Contact/VipGroupClick.
+
+**Tags:**
+1. *Google Tag* `G-BV46SKRELF`, em All Pages.
+2. *GA4 Event* `landing_page_view`, no acionador `landing_page_view`, com os campos da página + UTMs.
+3. *GA4 Event* `vip_whatsapp_click`, no acionador `vip_whatsapp_click`, com button_location, button_text, destination, city, state, page_type, campaign_type, clinic, source_page e as utm_* (sem fbclid/gclid/PII). Marcar como evento-chave no GA4.
+4. *HTML personalizado* Meta Pixel base `fbq('init','762018213673538'); fbq('track','PageView');`, em All Pages (uma vez por página).
+5. *HTML personalizado* conversão, no acionador `vip_whatsapp_click`, **uma única conversão por clique**:
+   ```html
+   <script>typeof fbq==="function"&&fbq("track","Lead",{content_name:"Grupo VIP Black Antecipada",content_category:"grupo_vip_whatsapp",button_location:{{button_location}},clinic:"incantare",city:"joinville"});</script>
+   ```
+   Defina a sequência da tag para disparar depois da tag base do Pixel.
+
+Depois: Visualizar (Tag Assistant), clicar nos 4 CTAs, conferir no Events Manager (Testar eventos) e Publicar.
 
 ## Arquivos
 ```
@@ -46,5 +53,4 @@ privacidade.html    termos.html    vercel.json
 ```
 
 ## Pendências
-- Colar os dois links em `js/app.js`.
 - Quando o subdomínio em adrianomarketing.com estiver definido: `og:image` absoluto, `og:url` e `canonical` no `index.html`.
