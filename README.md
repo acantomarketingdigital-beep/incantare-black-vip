@@ -56,4 +56,4 @@ privacidade.html    termos.html    vercel.json
 ```
 
 ## Pendências
-- Quando o subdomínio em adrianomarketing.com estiver definido: `og:image` absoluto, `og:url` e `canonical` no `index.html`.
+- Domínio: https://grupovipblack-incantarejoinville.adrianomarketing.com (metatag `facebook-domain-verification` no `<head>`).
