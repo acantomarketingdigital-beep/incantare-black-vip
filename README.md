@@ -12,8 +12,8 @@ Link com placeholder: o clique registra o evento mas não navega (aviso no conso
 
 ## Tracking
 - GTM **`GTM-KT5CN4GV`** (script no `<head>` + noscript logo após `<body>`), também nas páginas legais.
-- GA4 `G-BV46SKRELF` e Meta Pixel `762018213673538` **não** ficam no código: são configurados dentro do GTM.
-- O Pixel `762018213673538` é compartilhado de propósito com outras campanhas da Incantare, para treinar o Pixel com pessoas que entram em grupos VIP.
+- GA4 `G-BV46SKRELF` e Meta Pixel `1851466205395230` **não** ficam no código: são configurados dentro do GTM.
+- O Pixel `1851466205395230` ("PIXEL GRUPO VIP") é o mesmo da LP VIP anterior. Ele é dedicado a grupos VIP para concentrar o aprendizado em quem entra nos grupos.
 
 | Evento (dataLayer) | Quando | Campos |
 |---|---|---|
@@ -37,7 +37,7 @@ Em 1/out/2026 a versão publicada deste container **ainda não tinha nenhuma tag
 1. *Google Tag* `G-BV46SKRELF`, em All Pages.
 2. *GA4 Event* `landing_page_view`, no acionador `landing_page_view`, com os campos da página + UTMs.
 3. *GA4 Event* `vip_whatsapp_click`, no acionador `vip_whatsapp_click`, com button_location, button_text, destination, city, state, page_type, campaign_type, clinic, source_page e as utm_* (sem fbclid/gclid/PII). Marcar como evento-chave no GA4.
-4. *HTML personalizado* Meta Pixel base `fbq('init','762018213673538'); fbq('track','PageView');`, em All Pages (uma vez por página).
+4. *HTML personalizado* Meta Pixel base `fbq('init','1851466205395230'); fbq('track','PageView');`, em All Pages (uma vez por página).
 5. *HTML personalizado* conversão, no acionador `vip_whatsapp_click`, **uma única conversão por clique**:
    ```html
    <script>typeof fbq==="function"&&fbq("track","Lead",{content_name:"Grupo VIP Black Antecipada",content_category:"grupo_vip_whatsapp",button_location:{{button_location}},clinic:"incantare",city:"joinville"});</script>
