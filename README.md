@@ -24,6 +24,9 @@ Link com placeholder: o clique registra o evento mas não navega (aviso no conso
 UTMs/fbclid/gclid ficam em `sessionStorage` (`incantare_black_vip_attribution`). Valor vazio/"undefined" na URL nunca sobrescreve um valor já salvo; campos ausentes vão como `""`.
 
 ## Configuração do GTM-KT5CN4GV
+
+**Atalho:** importe `gtm/GTM-KT5CN4GV-import.json` (Admin → Importar contêiner → Mesclar). Ele cria tudo o que está listado abaixo.
+
 Em 1/out/2026 a versão publicada deste container **ainda não tinha nenhuma tag**. Criar:
 
 **Variáveis (Variável da camada de dados):** button_location, button_text, destination, city, state, page_type, campaign_type, clinic, source_page, utm_source, utm_medium, utm_campaign, utm_content, utm_term.
